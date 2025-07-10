@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { onAuthStateChanged, sendEmailVerification, signInWithPhoneNumber, RecaptchaVerifier, getAuth } from 'firebase/auth';
+import { onAuthStateChanged, sendEmailVerification, RecaptchaVerifier, getAuth, linkWithPhoneNumber } from 'firebase/auth';
 import { auth } from '../Firebase';
 import { toast } from 'react-toastify';
 import PhoneInput from 'react-phone-input-2';
@@ -31,27 +31,26 @@ function Profile() {
             toast.warn("Please enter a valid 10-digit Indian phone number.");
             return;
         }
+        if (auth.currentUser) {
+            try {
 
-        try {
+                window.recaptcha = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                    'size': 'normal',
+                    'callback': (response) => {
+                    },
+                    'expired-callback': () => {
+                    }
+                });
 
-            window.recaptcha = new RecaptchaVerifier(auth, 'recaptcha-container', {
-                'size': 'normal',
-                'callback': (response) => {
-
-                },
-                'expired-callback': () => {
-
-                }
-            });
-
-            const confirmation = await signInWithPhoneNumber(auth, phone, recaptcha);
-            toast.success("OTP sent successfully!");
-            setUserNum(confirmation);
-        } catch (error) {
-            console.error("Error during phone verification:", error);
-            toast.error("Failed to send OTP. Try again.");
-        } finally {
-            setIsChecking(false);
+                const confirmation = await linkWithPhoneNumber(auth.currentUser, phone, window.recaptcha);
+                toast.success("OTP sent successfully!");
+                setUserNum(confirmation);
+            } catch (error) {
+                console.error("Error during phone verification:", error);
+                toast.error("Failed to send OTP. Try again.");
+            } finally {
+                setIsChecking(false);
+            }
         }
     };
 
