@@ -1,4 +1,4 @@
-// routes/router.js
+
 import { createBrowserRouter } from "react-router-dom";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
@@ -8,44 +8,42 @@ import Home from "../Dashboard/Home";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Hero from "../components/Hero";
 import PublicRoute from "../components/PublicRoute";
-import Perofile from "../Dashboard/Perofile";
+import Profile from '../Dashboard/Profile'
+import NotFound from "../components/NotFound";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
-    children: [
-      {
-        index: true,
-        element: <Hero />,
-      },
-      {
-        path: 'login',
-        element: (
-          <PublicRoute>
-            <Login />
-          </PublicRoute>
-        )
-
-      },
-      {
-        path: "signup",
-        element: (
-          <PublicRoute>
-            <Signup />,
-          </PublicRoute>
-        )
-      },
-    ],
+    element: (
+      <ProtectedRoute>
+        <Hero />
+      </ProtectedRoute>
+    ),
   },
   {
+    path: "signup",
+    element: (
+      <PublicRoute>
+        <Signup />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "login",
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
+  },
+  {
+
     path: "/dashboard",
     element: (
       <ProtectedRoute>
         <Dashboard />
       </ProtectedRoute>
     ),
-
     children: [
       {
         index: true,
@@ -57,8 +55,13 @@ export const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Perofile />,
+        element: <Profile />,
       },
     ],
   },
+  {
+    path: "*",
+    element: <NotFound />
+  }
 ]);
+

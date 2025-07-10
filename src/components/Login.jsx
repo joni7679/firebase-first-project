@@ -34,43 +34,45 @@ function Login() {
     }
 
     return (
-        <div className='flex justify-center items-center h-screen '>
+        <>
             <ToastContainer />
-            <form onSubmit={handleLogin} className='bg-gray-800 px-10 py-10 rounded-xl shadow-lg'>
-                <h1 className='text-center text-white text-xl mb-4 font-bold'>Login</h1>
-                <div>
-                    <input
-                        type="email"
-                        name='email'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                        placeholder='Email'
-                    />
-                </div>
-                <div>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                        placeholder='Password'
-                    />
-                </div>
+            <div className='flex justify-center items-center h-screen '>
+                <form onSubmit={handleLogin} className='bg-gray-800 px-10 py-10 rounded-xl shadow-lg'>
+                    <h1 className='text-center text-white text-xl mb-4 font-bold'>Login</h1>
+                    <div>
+                        <input
+                            type="email"
+                            name='email'
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)}
+                            className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                            placeholder='Email'
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                            placeholder='Password'
+                        />
+                    </div>
 
-                <button
-                    type="submit"
-                    className='bg-yellow-500 w-full text-black font-bold px-2 py-2 rounded-lg mb-3'>
-                    Login
-                </button>
-                <h2 className='text-white text-center'>
-                    Don't have an account?{" "}
-                    <Link className='text-yellow-500 font-bold' to={'/signup'}>
-                        Signup Now
-                    </Link>
-                </h2>
-            </form>
-        </div>
+                    <button
+                        type="submit"
+                        className='bg-yellow-500 w-full text-black font-bold px-2 py-2 rounded-lg mb-3'>
+                        Login
+                    </button>
+                    <h2 className='text-white text-center'>
+                        Don't have an account?{" "}
+                        <Link className='text-yellow-500 font-bold' to={'/signup'}>
+                            Signup Now
+                        </Link>
+                    </h2>
+                </form>
+            </div>
+        </>
     );
 }
 

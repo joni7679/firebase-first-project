@@ -1,14 +1,14 @@
 import React from 'react';
 
 function Card({ products }) {
-  console.log("products", products);
+  console.log("Card image URL:", products.image);
 
   return (
     <div className="p-2 w-full max-w-md">
       <div className="bg-white p-3 rounded-2xl shadow-[inset_0_0px_3px_rgba(0,0,0,0.6)] hover:-translate-y-1 transition-transform duration-300">
         <div className="flex justify-center items-center">
           <img
-            className="rounded-lg h-80 w-full object-cover mb-2"
+            className="rounded-lg h-80 w-full object-contain mb-2"
             src={products.image}
             alt={products.title}
           />

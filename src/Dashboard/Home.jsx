@@ -1,3 +1,5 @@
+import { useContext } from "react";
+
 function Home() {
     const cards = [
         { title: "Users", value: "1,200+" },
@@ -5,7 +7,8 @@ function Home() {
         { title: "Visitors", value: "10,400" },
         { title: "Orders", value: "500+" },
     ];
-
+   
+    
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 p-5">
             {cards.map((val, index) => (

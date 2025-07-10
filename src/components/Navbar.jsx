@@ -6,9 +6,9 @@ function Navbar() {
     return (
         <>
             <nav className='w-full p-6 bg-blue-700 text-white flex items-center justify-between gap-5'>
-                <div className="logo">
+                <Link to={`/`} className="logo">
                     my Logo
-                </div>
+                </Link>
                 <div className='flex items-center gap-3'>
 
                     {storeuser ? (
