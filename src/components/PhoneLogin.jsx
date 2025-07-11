@@ -5,60 +5,54 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from "../Firebase";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { CgSpinnerTwo } from "react-icons/cg";
 
 const PhoneLogin = () => {
+
     const [phone, setPhone] = useState("");
     const [otp, setOtp] = useState("");
     const [isOTPSent, setIsOTPSent] = useState(false);
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-    //  Setup reCAPTCHA once
-    useEffect(() => {
-        if (!window.recaptchaVerifier) {
-            window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
-                size: "normal",
-                callback: () => {
-                    console.log("reCAPTCHA verified");
-                },
-            });
-        }
-    }, []);
-
-    const sendOtp = async () => {
+    let LoginPhoneNumber = async () => {
         if (phone.length < 10) {
-            toast.warn("📱 Enter a valid phone number");
+            toast.warn("Enter a valid phone number");
             return;
         }
+        console.log(auth, phone);
 
-        const appVerifier = window.recaptchaVerifier;
-        const phoneNumber = `+${phone}`;
+        setLoading(true);
+        const appVerifier = new RecaptchaVerifier('recaptcha-container', {
+            'size': 'invisible',
+            'callback': (response) => {
 
+            },
+            'expired': () => {
+
+            }
+        }, auth)
         try {
-            const confirmation = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-            setUser(confirmation);
+            const result = await signInWithPhoneNumber(auth, phone, appVerifier)
+            setUser(result)
             setIsOTPSent(true);
-            toast.success(" OTP sent successfully");
-        } catch (error) {
-            console.error(" OTP send failed", error);
-            toast.error(" OTP sending failed. Please try again later.");
+            setLoading(false);
+            toast.success("otp send successfully")
         }
-    };
+        catch (error) {
+            console.error("OTP send error:", error);
+            toast.error("Failed to send OTP");
+        }
+        finally {
+            setLoading(false);
+        }
+    }
 
-    const verifyOtp = async () => {
-        if (otp.length !== 6) {
-            toast.warn("🔢Enter a valid 6-digit OTP");
-            return;
-        }
+    let onOTPVerify = async () => {
 
-        try {
-            const result = await user.confirm(otp);
-            console.log("User:", result.user);
-            toast.success("🎉 OTP verified successfully!");
-        } catch (error) {
-            console.error(" OTP verification failed", error);
-            toast.error(" Incorrect OTP. Please try again.");
-        }
-    };
+
+    }
+
 
     return (
         <>
@@ -80,11 +74,14 @@ const PhoneLogin = () => {
                 />
 
 
-                <button
-                    onClick={sendOtp}
-                    className="bg-blue-600 text-white py-2 w-full mt-3 rounded hover:bg-blue-700"
+                <button onClick={LoginPhoneNumber}
+
+                    className="bg-emerald-600 cursor-pointer w-full flex gap-1 items-center justify-center py-2.5 text-white rounded"
                 >
-                    Send OTP
+                    {loading && (
+                        <CgSpinnerTwo size={20} className="mt-1 animate-spin" />
+                    )}
+                    <span>Send code via SMS</span>
                 </button>
 
                 {/*  OTP Input */}
@@ -97,11 +94,14 @@ const PhoneLogin = () => {
                             placeholder="Enter OTP"
                             className="border p-2 mt-3 w-full rounded"
                         />
-                        <button
-                            onClick={verifyOtp}
-                            className="bg-green-600 text-white py-2 w-full mt-2 rounded hover:bg-green-700"
+                        <button onClick={onOTPVerify}
+
+                            className="bg-emerald-600 cursor-pointer w-full flex gap-1 items-center justify-center py-2.5 text-white rounded"
                         >
-                            Verify OTP
+                            {loading && (
+                                <CgSpinnerTwo size={20} className="mt-1 animate-spin" />
+                            )}
+                            <span>Verify OTP</span>
                         </button>
                     </>
                 )}
